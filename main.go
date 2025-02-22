@@ -49,17 +49,14 @@ func main() {
 	configFilename := flag.String("config", os.Getenv("FORMATTER_CONFIG"), "config file (yaml)")
 	flag.Parse()
 	config := ReadConfig(*configFilename)
-	if flag.NArg() != 2 {
-		fmt.Println("command and filename required")
-		os.Exit(1)
-	}
 	switch flag.Arg(0) {
 	case "lint":
 		commandLint(config, flag.Arg(1))
 	case "fix":
 		commandFix(config, flag.Arg(1))
 	default:
-		fmt.Printf("error: unknown command - %q\n", flag.Arg(0))
-		// In a real program (not an example) print to os.Stderr and exit the program with non-zero value.
+		fmt.Println("formatter lint <filename>")
+		fmt.Println("formatter fix <filename>")
+		os.Exit(1)
 	}
 }
