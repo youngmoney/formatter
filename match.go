@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func Match(filename string, matchers *[]Matcher) *Matcher {
@@ -34,7 +35,7 @@ func GetShebang(filename string) string {
 	}
 	r := bufio.NewReader(f)
 	s, e := r.ReadString('\n')
-	if e != nil {
+	if e != nil && strings.HasPrefix(s, "#!") {
 		return s
 	}
 	return ""
