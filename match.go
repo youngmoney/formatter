@@ -10,8 +10,8 @@ import (
 func Match(filename string, matchers *[]Matcher) *Matcher {
 	absname, err := filepath.Abs(filename)
 	if err != nil {
-		fmt.Println("error reading file")
-		return nil
+		fmt.Println("error finding file")
+		os.Exit(1)
 	}
 	shebang := GetShebang(filename)
 	for _, m := range *matchers {
