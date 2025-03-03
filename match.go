@@ -35,7 +35,7 @@ func GetShebang(filename string) string {
 	}
 	r := bufio.NewReader(f)
 	s, e := r.ReadString('\n')
-	if e != nil && strings.HasPrefix(s, "#!") {
+	if e == nil && strings.HasPrefix(s, "#!") {
 		return s
 	}
 	return ""
