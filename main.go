@@ -13,13 +13,15 @@ func commandLint(config Config, filename string) {
 	}
 	match := Match(filename, &config.Formatter.Matchers)
 	if match == nil || match.LinterName == "" {
-		fmt.Println("Ignoring: %s", filename)
+		fmt.Println("Ignoring: ", filename)
+		return
 	}
 
 	command := GetCommand(match.LinterName, &config.Formatter.Linters)
 
 	if command == nil {
-		fmt.Println("Ignoring: %s", filename)
+		fmt.Println("Ignoring: ", filename, " no command")
+		return
 	}
 
 	ExecuteCommand(filename, command)
@@ -33,13 +35,15 @@ func commandFix(config Config, filename string) {
 
 	match := Match(filename, &config.Formatter.Matchers)
 	if match == nil || match.FixerName == "" {
-		fmt.Println("Ignoring: %s", filename)
+		fmt.Println("Ignoring: ", filename)
+		return
 	}
 
 	command := GetCommand(match.FixerName, &config.Formatter.Fixers)
 
 	if command == nil {
-		fmt.Println("Ignoring: %s", filename)
+		fmt.Println("Ignoring: ", filename, " no command")
+		return
 	}
 
 	ExecuteCommand(filename, command)
