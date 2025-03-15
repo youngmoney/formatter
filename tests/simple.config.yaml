@@ -1,0 +1,21 @@
+formatter:
+  linters:
+  - name: one
+    command: echo 1
+  - name: two
+    command: echo 2
+  fixers:
+  - name: three
+    command: echo 3
+  - name: four
+    command: echo 4
+  matchers:
+  - path_regex: never
+    linter_name: one
+    fixer_name: three
+  - shebang_regex: .*match.*
+    linter_name: one
+    fixer_name: four
+  - path_regex: .*match.*
+    linter_name: two
+    fixer_name: three

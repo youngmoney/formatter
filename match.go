@@ -11,7 +11,7 @@ import (
 func Match(filename string, matchers *[]Matcher) *Matcher {
 	absname, err := filepath.Abs(filename)
 	if err != nil {
-		fmt.Println("error finding file")
+		fmt.Fprintln(os.Stderr, "error finding file")
 		os.Exit(1)
 	}
 	shebang := GetShebang(filename)
@@ -30,7 +30,7 @@ func Match(filename string, matchers *[]Matcher) *Matcher {
 func GetShebang(filename string) string {
 	f, err := os.Open(filename)
 	if err != nil {
-		fmt.Printf("error opening file: %v\n", err)
+		fmt.Fprintf(os.Stderr, "error opening file: %v\n", err)
 		os.Exit(1)
 	}
 	r := bufio.NewReader(f)

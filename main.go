@@ -8,45 +8,45 @@ import (
 
 func commandLint(config Config, filename string) {
 	if len(filename) == 0 {
-		fmt.Println("provide a file to lint")
+		fmt.Fprintln(os.Stderr, "provide a file to lint")
 		os.Exit(1)
 	}
 	match := Match(filename, &config.Formatter.Matchers)
 	if match == nil || match.LinterName == "" {
-		fmt.Println("Ignoring: ", filename)
+		fmt.Fprintln(os.Stderr, "Ignoring:", filename)
 		return
 	}
 
 	command := GetCommand(match.LinterName, &config.Formatter.Linters)
 
 	if command == nil {
-		fmt.Println("Ignoring: ", filename, " no command")
+		fmt.Fprintln(os.Stderr, "Ignoring:", filename, " no command")
 		return
 	}
 
-	ExecuteCommand(filename, command)
+	ExitIfNonZero(ExecuteCommandInteractive(filename, command.Command))
 }
 
 func commandFix(config Config, filename string) {
 	if len(filename) == 0 {
-		fmt.Println("provide a file to fix")
+		fmt.Fprintln(os.Stderr, "provide a file to fix")
 		os.Exit(1)
 	}
 
 	match := Match(filename, &config.Formatter.Matchers)
 	if match == nil || match.FixerName == "" {
-		fmt.Println("Ignoring: ", filename)
+		fmt.Fprintln(os.Stderr, "Ignoring:", filename)
 		return
 	}
 
 	command := GetCommand(match.FixerName, &config.Formatter.Fixers)
 
 	if command == nil {
-		fmt.Println("Ignoring: ", filename, " no command")
+		fmt.Fprintln(os.Stderr, "Ignoring:", filename, " no command")
 		return
 	}
 
-	ExecuteCommand(filename, command)
+	ExitIfNonZero(ExecuteCommandInteractive(filename, command.Command))
 }
 
 func main() {
@@ -59,8 +59,8 @@ func main() {
 	case "fix":
 		commandFix(config, flag.Arg(1))
 	default:
-		fmt.Println("formatter lint <filename>")
-		fmt.Println("formatter fix <filename>")
+		fmt.Fprintln(os.Stderr, "formatter lint <filename>")
+		fmt.Fprintln(os.Stderr, "formatter fix <filename>")
 		os.Exit(1)
 	}
 }
